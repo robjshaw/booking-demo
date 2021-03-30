@@ -10,10 +10,10 @@ exports.handler = function(context, event, callback) {
     response.product = "";
     response.product_type = "";
 
-    console.log('+'+ event.from);
+    console.log('+'+ event.From);
 
     base('custRecords').select({
-        filterByFormula: `{phoneNumber} = "${event.from}"`
+        filterByFormula: `{phoneNumber} = "${event.From}"`
     }).eachPage(function page(records, fetchNextPage) {
         
         records.forEach(function(record) {
