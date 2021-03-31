@@ -5,7 +5,7 @@ exports.handler = function(context, event, callback) {
 
     var fuzz = require('fuzzball');
 
-    var days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
+    var days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday'];
 
     var response = {};
 
@@ -23,7 +23,24 @@ exports.handler = function(context, event, callback) {
 
     });
 
-    callback(null, response);
+    response.options = [];
 
+    base('slots').select({
+        filterByFormula: `{day} = "${response.day}"`
+    }).eachPage(function page(records, fetchNextPage) {
+        records.forEach(function(record) {
+            
+            var tmp = {};
 
+            tmp.timing = record.get('timing');
+
+            response.options.push(tmp);
+
+        });
+
+        callback(null, response);
+    });
 }
+
+
+// ${response.day}
