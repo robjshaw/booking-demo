@@ -10,7 +10,7 @@ exports.handler = function(context, event, callback) {
     response.product = "";
     response.product_type = "";
 
-    console.log('+'+ event.From);
+    console.log(event.From);
 
     base('custRecords').select({
         filterByFormula: `{phoneNumber} = "${event.From}"`
@@ -22,7 +22,11 @@ exports.handler = function(context, event, callback) {
             response.name = record.get('firstName');
             response.product = record.get('productModelA');
             response.product_type = record.get('productTypeA');
-
+            if (Array.isArray(record.get('slots')) == true){
+                response.slots = record.get('slots')[0];
+            }else{
+                response.slots = 0;
+            }
         });
 
         callback(null, response);
