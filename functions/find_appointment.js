@@ -14,7 +14,7 @@ exports.handler = function(context, event, callback) {
     days.forEach(function (arrayItem) {
 
         var tmp = fuzz.ratio(arrayItem, event.gather);
-        console.log(tmp);
+        console.log(arrayItem + '-' + tmp);
 
         if (tmp > response.day_confidence){
             response.day_confidence = tmp;
@@ -38,14 +38,21 @@ exports.handler = function(context, event, callback) {
                 tmp.id = record.id;
 
                 response.options.push(tmp);
-                
+
+                response.available = true;
+
+                if (typeof response.times === 'undefined') {
+                    response.times = tmp.timing
+                }else{
+                    response.times = response.times + ',' + tmp.timing;
+                }
             };
 
         });
 
+        response.say = "We have appointment slots in the " + response.times + " for " + response.day + ". What would work for you?";
+        
+
         callback(null, response);
     });
 }
-
-
-// ${response.day}
