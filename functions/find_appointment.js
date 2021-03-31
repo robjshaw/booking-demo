@@ -32,9 +32,14 @@ exports.handler = function(context, event, callback) {
             
             var tmp = {};
 
-            tmp.timing = record.get('timing');
+            if (record.get('Status') == 'available'){
 
-            response.options.push(tmp);
+                tmp.timing = record.get('timing');
+                tmp.id = record.id;
+
+                response.options.push(tmp);
+                
+            };
 
         });
 
